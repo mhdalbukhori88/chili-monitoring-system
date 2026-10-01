@@ -42,6 +42,34 @@ Sistem pemantauan pertanian presisi berbasis kecerdasan buatan (*Artificial Inte
 
 ---
 
+## Dataset & Manajemen Data Pelatihan
+
+Repositori ini telah menyertakan **model terlatih siap pakai** (`backend/app/models_data/cnn_model.pt` dan `lstm_growth_model.pt`) serta sampel dataset langsung (`dataset baru 1`).
+
+Mengingat batas ukuran berkas GitHub (maksimum 2 GB per push & batas rekomendasi repositori 5 GB), dataset foto berskala besar (**total ~13.1 GB / 42.748 gambar**) dikelola secara terpisah melalui repositori data cloud (Hugging Face Datasets / Google Drive / Kaggle):
+
+| Dataset | Ukuran & Jumlah | Status di Git | Tautan Unduhan & Lokasi |
+|---|---|---|---|
+| **Dataset Baru 1 (Bibit & Cabai Berbuah)** | 23 MB (96 foto) | **Tersedia di Repo** | Langsung tersedia di folder `dataset baru 1/` |
+| **Chili Leaf Disease Dataset** | 1.07 GB (5.000 foto) | Cloud Storage | [Tautan Dataset Daun Cabai (Hugging Face / Drive)](https://github.com/mhdalbukhori88/chili-monitoring-system/releases) *(folder: `Chili-Leaf-Disease-Dataset-main/`)* |
+| **Chili Growth & Augmented Dataset** | 8.84 GB (25.570 foto) | Cloud Storage | [Tautan Dataset Pertumbuhan & Augmentasi](https://github.com/mhdalbukhori88/chili-monitoring-system/releases) *(folder: `dataset baru/`)* |
+| **Master Preprocessed Dataset** | 3.24 GB (12.178 foto) | Generated Otomatis | Dihasilkan otomatis via `backend/app/ml/prepare_dataset.py` ke folder `backend/app/models_data/dataset/` |
+
+### Cara Mempersiapkan & Melatih Ulang Model CNN
+Untuk mereproduksi atau melatih ulang model dengan foto mentah:
+```bash
+# 1. Ekstrak foto mentah lalu susun ke folder dataset utama:
+python backend/app/ml/prepare_dataset.py -r "/path/ke/foto_mentah"
+
+# 2. Ingest foto tambahan (seperti dataset baru 1):
+python backend/app/ml/ingest_dataset_baru_1.py
+
+# 3. Jalankan pelatihan transfer learning CNN Multi-Head:
+python backend/app/ml/train_cnn.py
+```
+
+---
+
 ## Panduan Menjalankan Sistem
 
 ### Opsi 1: Menjalankan Cepat dengan Docker Compose (Rekomendasi Produksi)
